@@ -1,0 +1,25 @@
+﻿PROJECT 3B - Solving synchronization problems
+
+
+Coded by: Ethan Schutzman && Steven McAteer
+
+
+
+OUR APPROACH:
+	We created a global array of positions to ensure no two nodes exist in the same spot.
+
+	
+We used three different arrays of values to simulate the three different channels that nodes can 
+live on. These arrays contain instances of the struct bcast, which has the fields of: 
+	id, message, isRebroadcast, and channel. 
+	
+
+When Broadcasting the node first looks to make sure that it will not intersect with another broadcast.  
+We used a channel lock to ensure that no two nodes can write onto a channel simultaneously.  Each node 
+only locks the channel when it is putting it's broadcast data in or taking it out.  We did not use condition 
+variables, but rather used trylock, which does not wait if it cannot get the lock. We have various helper 
+functions for actions such as: finding a channel, marking and unmarking zones, and checking the zones. 
+We have also added noisemakers to disrupt other broadcasts.  Noisemakers do not care if there is already 
+something broadcasting, it will go in and overwrite that broadcast location message.
+
+
